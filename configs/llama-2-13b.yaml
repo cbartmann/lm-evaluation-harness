@@ -1,21 +1,12 @@
+model_name: llama-2-13b
+model_path: meta-llama/Llama-2-13b-chat-hf
 backend: vllm
-model_name: glm-4.7-fash
-model_path: zai-org/GLM-4.7-Flash
-
-model_args:
-  tensor_parallel_size: 1
-  trust_remote_code: true
-  # enforce_eager: true
-
-# Chat template settings
-apply_chat_template: true
-
 
 gen_kwargs:
-  temperature: 1.0
-  top_p: 0.95
+  temperature: 0.6
 
-# Use raw task with system instruction for chat models
+apply_chat_template: true
+
 task: moleculariq_pass_at_k
 
 system_prompt: |
@@ -52,6 +43,4 @@ system_prompt: |
 
   Include ALL requested properties. Never null or omit.
 
-# Optional: limit for testing
-# limit: 10
 batch_size: auto

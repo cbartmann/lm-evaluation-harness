@@ -1,11 +1,8 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: mistral-small-24b
+model_path: mistralai/Mistral-Small-24B-Instruct-2501
 backend: vllm
 
 apply_chat_template: true
-
-chat_template_kwargs:
-  reasoning_effort: low
 
 task: moleculariq_pass_at_k
 

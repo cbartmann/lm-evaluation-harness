@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: mistral-7b
+model_path: mistralai/Mistral-7B-v0.1
 backend: vllm
 
-apply_chat_template: true
+gen_kwargs:
+  temperature: 0.6
 
-chat_template_kwargs:
-  reasoning_effort: low
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

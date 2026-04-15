@@ -1,23 +1,12 @@
-model_name: minimax-m2.2
-model_path: /local00/bioinf/bartmann/models/MiniMax-M2.1
+model_name: qwen3-235b-a22b
+model_path: Qwen/Qwen3-235B-A22B-Thinking-2507-FP8
 backend: vllm
 
-gen_kwargs:
-  temperature: 1.0
-  top_p: 0.95
-  top_k: 40
-
-# Model/vLLM args
 model_args:
-  tensor_parallel_size: 4
-  trust_remote_code: true
-  enforce_eager: true
-  # max_model_len: 32768
+  tensor_parallel_size: 8
 
-# Chat template settings
 apply_chat_template: true
 
-# Use raw task with system instruction for chat models
 task: moleculariq_pass_at_k
 
 system_prompt: |
@@ -54,6 +43,4 @@ system_prompt: |
 
   Include ALL requested properties. Never null or omit.
 
-# Optional: limit for testing
-# limit: 10
 batch_size: auto

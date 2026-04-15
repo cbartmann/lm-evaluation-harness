@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: qwen3-next-80b-a3b
+model_path: Qwen/Qwen3-Next-80B-A3B-Thinking
 backend: vllm
 
-apply_chat_template: true
+model_args:
+  tensor_parallel_size: 4
 
-chat_template_kwargs:
-  reasoning_effort: low
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

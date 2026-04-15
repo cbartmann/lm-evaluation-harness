@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
+model_name: gpt-oss-20b-high
 model_path: openai/gpt-oss-20b
 backend: vllm
 
 apply_chat_template: true
 
 chat_template_kwargs:
-  reasoning_effort: low
+  reasoning_effort: high
 
 task: moleculariq_pass_at_k
 

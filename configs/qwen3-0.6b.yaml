@@ -1,19 +1,13 @@
-backend: vllm
-model_name: qwen3-8b
+# Small model for testing (not in paper)
+model_name: qwen3-0.6b
 model_path: Qwen/Qwen3-0.6B
+backend: vllm
 
-# Model/vLLM args
-model_args:
-  tensor_parallel_size: 1
-  dtype: bfloat16
-  gpu_memory_utilization: 0.9
-  enable_thinking: false
-  # max_model_len: 32768
-
-# Chat template settings
 apply_chat_template: true
 
-# Use raw task with system instruction for chat models
+chat_template_kwargs:
+  enable_thinking: false
+
 task: moleculariq_pass_at_k
 
 system_prompt: |
@@ -50,6 +44,4 @@ system_prompt: |
 
   Include ALL requested properties. Never null or omit.
 
-# Optional: limit for testing
-# limit: 10
 batch_size: auto

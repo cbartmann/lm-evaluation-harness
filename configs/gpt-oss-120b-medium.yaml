@@ -1,11 +1,15 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: gpt-oss-120b-medium
+model_path: openai/gpt-oss-120b
 backend: vllm
+
+model_args:
+  tensor_parallel_size: 4
+  enforce_eager: true
 
 apply_chat_template: true
 
 chat_template_kwargs:
-  reasoning_effort: low
+  reasoning_effort: medium
 
 task: moleculariq_pass_at_k
 

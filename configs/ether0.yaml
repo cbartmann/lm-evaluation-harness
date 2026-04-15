@@ -1,15 +1,14 @@
-# Ether0 model config
 model_name: ether0
-model_path: tscholak/ether0-8B-sft
+model_path: futurehouse/ether0
 backend: vllm
 
 gen_kwargs:
   temperature: 0.6
-  max_gen_toks: 32768
   top_p: 0.95
   top_k: 40
 
-# Ether0 uses its own tags, so use raw task
+apply_chat_template: true
+
 task: moleculariq_pass_at_k
 
 system_prompt: |

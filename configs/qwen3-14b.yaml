@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: qwen3-14b
+model_path: Qwen/Qwen3-14B
 backend: vllm
 
 apply_chat_template: true
 
 chat_template_kwargs:
-  reasoning_effort: low
+  enable_thinking: true
 
 task: moleculariq_pass_at_k
 

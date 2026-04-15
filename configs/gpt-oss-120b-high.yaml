@@ -1,21 +1,16 @@
-# GPT-OSS-120B config (high reasoning effort)
 model_name: gpt-oss-120b-high
 model_path: openai/gpt-oss-120b
 backend: vllm
 
 model_args:
   tensor_parallel_size: 4
-  trust_remote_code: true
   enforce_eager: true
 
-# Chat template settings
 apply_chat_template: true
 
-# Reasoning effort passed to chat template
 chat_template_kwargs:
   reasoning_effort: high
 
-# Use raw task with system instruction for chat models
 task: moleculariq_pass_at_k
 
 system_prompt: |
@@ -52,6 +47,4 @@ system_prompt: |
 
   Include ALL requested properties. Never null or omit.
 
-# Optional: limit for testing
-# limit: 10
 batch_size: auto

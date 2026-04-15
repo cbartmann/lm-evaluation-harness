@@ -1,11 +1,16 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: glm-4.6
+model_path: zai-org/GLM-4.6-FP8
 backend: vllm
 
-apply_chat_template: true
+model_args:
+  trust_remote_code: true
 
-chat_template_kwargs:
-  reasoning_effort: low
+gen_kwargs:
+  temperature: 1.0
+  top_p: 0.95
+  top_k: 40
+
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

@@ -1,21 +1,12 @@
-model_name: kimi-k2-thinking
-model_path: /local00/bioinf/bartmann/models/Kimi-K2-Thinking
+model_name: txgemma-9b
+model_path: google/txgemma-9b-chat
 backend: vllm
 
 gen_kwargs:
-  temperature: 1.0
+  temperature: 0.6
 
-# Model/vLLM args
-model_args:
-  tensor_parallel_size: 8
-  trust_remote_code: true
-  enforce_eager: true
-  # max_model_len: 32768
-
-# Chat template settings
 apply_chat_template: true
 
-# Use raw task with system instruction for chat models
 task: moleculariq_pass_at_k
 
 system_prompt: |
@@ -52,6 +43,4 @@ system_prompt: |
 
   Include ALL requested properties. Never null or omit.
 
-# Optional: limit for testing
-# limit: 10
 batch_size: auto

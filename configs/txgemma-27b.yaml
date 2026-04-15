@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: txgemma-27b
+model_path: google/txgemma-27b-chat
 backend: vllm
 
-apply_chat_template: true
+gen_kwargs:
+  temperature: 0.6
 
-chat_template_kwargs:
-  reasoning_effort: low
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

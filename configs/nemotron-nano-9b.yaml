@@ -1,11 +1,12 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: nemotron-nano-9b
+model_path: nvidia/NVIDIA-Nemotron-Nano-9B-v2
 backend: vllm
 
-apply_chat_template: true
+gen_kwargs:
+  temperature: 0.6
+  top_p: 0.95
 
-chat_template_kwargs:
-  reasoning_effort: low
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

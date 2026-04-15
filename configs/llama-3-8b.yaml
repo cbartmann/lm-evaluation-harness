@@ -1,11 +1,11 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: llama-3-8b
+model_path: meta-llama/Meta-Llama-3-8B-Instruct
 backend: vllm
 
-apply_chat_template: true
+gen_kwargs:
+  temperature: 0.6
 
-chat_template_kwargs:
-  reasoning_effort: low
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 

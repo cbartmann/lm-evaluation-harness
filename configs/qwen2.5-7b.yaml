@@ -1,11 +1,8 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: qwen2.5-7b
+model_path: Qwen/Qwen2.5-7B-Instruct
 backend: vllm
 
 apply_chat_template: true
-
-chat_template_kwargs:
-  reasoning_effort: low
 
 task: moleculariq_pass_at_k
 

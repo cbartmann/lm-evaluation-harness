@@ -1,11 +1,14 @@
-model_name: gpt-oss-20b-low
-model_path: openai/gpt-oss-20b
+model_name: deepseek-r1-0528
+model_path: nvidia/DeepSeek-R1-0528-FP4-v2
 backend: vllm
 
-apply_chat_template: true
+model_args:
+  tensor_parallel_size: 8
 
-chat_template_kwargs:
-  reasoning_effort: low
+gen_kwargs:
+  temperature: 0.6
+
+apply_chat_template: true
 
 task: moleculariq_pass_at_k
 
