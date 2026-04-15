@@ -26,12 +26,6 @@ metric_list:
   - metric: pass_at_3
     aggregation: mean
     higher_is_better: true
-  - metric: pass_at_5
-    aggregation: mean
-    higher_is_better: true
-  - metric: pass_at_8
-    aggregation: mean
-    higher_is_better: true
   - metric: avg_accuracy
     aggregation: mean
     higher_is_better: true
