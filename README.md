@@ -102,7 +102,7 @@ Each config specifies model path, generation parameters, system prompt, and chat
 | Task | Repeats | Metrics | Use case |
 |------|---------|---------|----------|
 | `moleculariq_pass_at_k` | 3 | pass@1, pass@3, avg_accuracy | Standard evaluation with system instruction |
-| `moleculariq_inline` | 8 | pass@1, pass@3, pass@5, pass@8, avg_accuracy | Models needing instructions in the prompt |
+| `moleculariq_inline` | 3 | pass@1, pass@3, avg_accuracy | Models needing instructions in the prompt |
 
 ## Leaderboard
 
