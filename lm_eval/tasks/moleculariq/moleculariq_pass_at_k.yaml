@@ -2,7 +2,7 @@ tag:
   - chemistry
   - moleculariq
 task: moleculariq_pass_at_k
-dataset_path: tschouis/moleculariq_arxiv
+dataset_path: ml-jku/moleculariq-v0.0
 dataset_name: default
 process_docs: !function task_processor.process_docs
 output_type: generate_until
