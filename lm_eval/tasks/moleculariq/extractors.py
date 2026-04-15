@@ -366,7 +366,7 @@ def extract_answer_only(response):
         try:
             ast.literal_eval(candidate)
             candidates.append((start_pos, candidate, 'python'))
-        except (ValueError, SyntaxError):
+        except (ValueError, SyntaxError, TypeError):
             if structure_type == 'dict' and ':' in candidate:
                 if '"' not in candidate and "'" not in candidate:
                     candidates.append((start_pos, candidate, 'simple_dict'))
