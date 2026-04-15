@@ -1,33 +1,60 @@
 # MolecularIQ Benchmark Task
 
-MolecularIQ is a comprehensive chemistry benchmark for evaluating language models on molecular understanding tasks. This implementation provides Pass@k metrics.
+MolecularIQ is a fully symbolically verifiable benchmark for assessing reasoning over molecular structures.
+It covers three task types -- feature counting, index-based attribution, and constrained generation -- across
+six categories of symbolically verifiable molecular features (graph topology, chemistry-typed topology,
+composition, chemical perception, functional groups, and synthesis/fragmentation) and three orthogonal
+complexity axes (SMILES representation format, molecular complexity, and multitask load).
+
+**Paper**: [MolecularIQ: Characterizing Chemical Reasoning Capabilities Through Symbolic Verification on Molecular Graphs](https://arxiv.org/abs/2601.15279)
+
+**Leaderboard**: [https://huggingface.co/spaces/ml-jku/molecularIQ_leaderboard](https://huggingface.co/spaces/ml-jku/molecularIQ_leaderboard)
+
+**Code**: [https://github.com/ml-jku/moleculariq](https://github.com/ml-jku/moleculariq)
 
 ## Dataset
 
-- **Dataset**: `tschouis/moleculariq_arxiv`
-- **Split**: test
+- **Dataset**: `ml-jku/moleculariq-v0.0`
+- **Split**: test (5,111 questions from 849 unique molecules)
 
 ## Task Types
 
-The benchmark includes the following task categories:
+The benchmark includes three reasoning task types:
 
-1. **Count Tasks**: Counting molecular features (atoms, rings, functional groups)
-   - `single_count`: Single property counting
+1. **Feature Counting** (1,800 questions): Establishes baseline comprehension of molecular graphs.
+   - `single_count`: Single property counting (e.g., "How many rotatable bonds?")
    - `multi_count`: Multiple property counting in one question
 
-2. **Index Tasks**: Identifying atom indices for specific features
-   - `single_index`: Single index identification
+2. **Index-based Attribution** (1,740 questions): Requires models to ground answers in specific atoms/bonds/substructures.
+   - `single_index`: Single index identification (e.g., "Which atoms are part of the Murcko scaffold?")
    - `multi_index`: Multiple index identification
 
-3. **Constraint Generation**: Generating molecules that satisfy given constraints
+3. **Constrained Generation** (1,571 questions): Generating molecules that satisfy given constraints.
+   - `single_constraint_generation`: Single constraint
+   - `multi_constraint_generation`: Multiple constraints
+
+## Molecular Feature Categories
+
+- **Graph Topology**: Rings, fused rings, bridgehead atoms, ring size extremes, linear termini, branch points
+- **Chemistry-typed Topology**: Aromatic vs. aliphatic rings, heterocycles, saturation, sp3 carbon hybridization, longest carbon chains, stereochemical descriptors
+- **Composition**: Carbon, hetero, halogen, heavy, hydrogen atom counts, molecular formula
+- **Chemical Perception**: Hydrogen bond donors/acceptors, rotatable bonds, oxidation states
+- **Functional Groups**: Alcohols, amines, carboxylic acids, and other standard functional groups
+- **Synthesis/Fragmentation**: BRICS fragmentation, template-based reaction prediction, Murcko scaffold extraction
+
+## Complexity Axes
+
+- **Molecular Complexity** (Bertz index): Simple (0-250), Medium (250-1000), Complex (1000+)
+- **Multitask Load**: 1, 2, 3, or 5 simultaneous sub-tasks per question
+- **SMILES Representation**: Canonical, kekulized, randomized, ring-number enumerated
 
 ## Metrics
 
-- **Pass@1**: Accuracy on first attempt
-- **Pass@3**: Any correct answer in first 3 attempts
-- **Pass@5**: Any correct answer in first 5 attempts
-- **Pass@8**: Any correct answer in first 8 attempts
+- **pass_at_1**: Accuracy on first attempt
+- **pass_at_3**: Any correct answer in first 3 attempts
 - **avg_accuracy**: Average accuracy across all attempts
+
+Scoring uses a binary symbolic verifier; per-instance accuracy is the mean over independent rollouts.
 
 ## Available Tasks
 
@@ -46,7 +73,6 @@ For chat models or when using `--system_instruction`:
 lm_eval --model vllm \
     --model_args pretrained=your-model-name \
     --tasks moleculariq_pass_at_k \
-    --system_instruction "You are a chemistry expert. Provide answers in <answer>JSON</answer> format." \
     --batch_size auto
 ```
 
@@ -117,11 +143,6 @@ For constraint generation:
 <answer>{"smiles": "CCO"}</answer>
 ```
 
-The extraction function also supports the ether0 format:
-```
-<|answer_start|>{"smiles": "CCO"}<|answer_end|>
-```
-
 ## Atom Indexing Convention
 
 Atoms are indexed from 0 to N-1, reading the SMILES string left to right, counting only heavy atoms (non-hydrogen). Examples:
@@ -130,59 +151,14 @@ Atoms are indexed from 0 to N-1, reading the SMILES string left to right, counti
 - `"CC(C)O"`: C(0), C(1), C(2), O(3)
 - `"CC(=O)N"`: C(0), C(1), O(2), N(3)
 
-## Customization
-
-### Custom Extraction via Filters
-
-The lm-eval `filter_list` mechanism allows users to customize output extraction. Users can create a task variant YAML:
-
-```yaml
-# my_model_moleculariq.yaml
-include: moleculariq_pass_at_k.yaml
-task: my_model_moleculariq
-
-filter_list:
-  - name: my_extraction
-    filter:
-      - function: custom
-        filter_fn: !function my_extractors.extract_my_format
-```
-
-### Custom Preprocessing via `doc_to_text`
-
-Users can customize prompt preprocessing by overriding `doc_to_text`:
-
-```yaml
-# my_model_moleculariq.yaml
-include: moleculariq_pass_at_k.yaml
-task: my_model_moleculariq
-
-doc_to_text: !function my_utils.custom_doc_to_text
-```
-
-### Using Regex Filters
-
-For simple pattern extraction, use the built-in regex filter:
-
-```yaml
-filter_list:
-  - name: extract_answer
-    filter:
-      - function: regex
-        regex_pattern: r"<my_answer>(.*?)</my_answer>"
-        group_select: 0
-        fallback: ""
-```
-
 ## Citation
 
-If you use this benchmark, please cite the MolecularIQ paper:
-
 ```bibtex
-@article{moleculariq,
-  title={MolecularIQ: A Comprehensive Benchmark for Molecular Intelligence},
-  author={...},
-  journal={arXiv preprint},
-  year={2024}
+@inproceedings{bartmann2026moleculariq,
+  title={Molecular{IQ}: Characterizing Chemical Reasoning Capabilities Through Symbolic Verification on Molecular Graphs},
+  author={Christoph Bartmann and Johannes Schimunek and Mykyta Ielanskyi and Philipp Seidl and G{\"u}nter Klambauer and Sohvi Luukkonen},
+  booktitle={The Fourteenth International Conference on Learning Representations},
+  year={2026},
+  url={https://openreview.net/forum?id=RqwEzZqMFv}
 }
 ```

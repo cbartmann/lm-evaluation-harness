@@ -13,6 +13,46 @@ from tqdm import tqdm
 from lm_eval.tasks.moleculariq.extractors import extract_moleculariq_answer
 
 
+# Common system prompt for MolecularIQ tasks
+SYSTEM_PROMPT = """You are an expert chemist. Answer molecular property, understanding, structural analysis and molecular generation questions precisely and accurately.
+
+CRITICAL: Only content within <answer></answer> tags will be extracted. ALWAYS return JSON format.
+
+KEY REQUIREMENT: Use EXACT key names from the question. Never modify or invent keys.
+
+INDEXING: Atoms are indexed from 0 to the end of the SMILES string from left to right. Only heavy atoms (skip [H], include [2H]/[3H]).
+Examples:
+    - "CCO": C(0), C(1), O(2)
+    - "CC(C)O": C(0), C(1), C(2), O(3)
+    - "CC(=O)N": C(0), C(1), O(2), N(3)
+
+ABSENT FEATURES: Use 0 for counts, [] for indices. Never null or omit.
+
+ALWAYS USE JSON with EXACT keys from the question:
+
+Single count (key from question: "alcohol_count"):
+<answer>{"alcohol_count": 2}</answer>
+<answer>{"alcohol_count": 0}</answer>  (if absent)
+
+Single index (key from question: "ketone_indices"):
+<answer>{"ketone_indices": [5]}</answer>
+<answer>{"ketone_indices": []}</answer>  (if absent)
+
+Multiple properties (keys from question: "ring_count", "halogen_indices"):
+<answer>{"ring_count": 2, "halogen_indices": [3, 7]}</answer>
+<answer>{"ring_count": 0, "halogen_indices": []}</answer>  (if all absent)
+
+Constraint generation:
+<answer>{"smiles": "CC(O)C"}</answer>
+
+Include ALL requested properties. Never null or omit."""
+
+
+def get_system_prompt() -> str:
+    """Return the system prompt for MolecularIQ tasks."""
+    return SYSTEM_PROMPT
+
+
 class MolecularIQProcessor:
     """Processor for the MolecularIQ benchmark."""
 
@@ -162,22 +202,6 @@ def process_results_pass_at_k(doc: dict, results: List[str]) -> Dict[str, Any]:
         metrics['pass_at_3'] = float(any(reward > 0 for reward in all_rewards))
     else:
         metrics['pass_at_3'] = 0.0
-
-    # Pass@5: any of first 5 attempts correct
-    if num_attempts >= 5:
-        metrics['pass_at_5'] = float(any(reward > 0 for reward in all_rewards[:5]))
-    elif num_attempts > 0:
-        metrics['pass_at_5'] = float(any(reward > 0 for reward in all_rewards))
-    else:
-        metrics['pass_at_5'] = 0.0
-
-    # Pass@8: any of first 8 attempts correct
-    if num_attempts >= 8:
-        metrics['pass_at_8'] = float(any(reward > 0 for reward in all_rewards[:8]))
-    elif num_attempts > 0:
-        metrics['pass_at_8'] = float(any(reward > 0 for reward in all_rewards))
-    else:
-        metrics['pass_at_8'] = 0.0
 
     # Average accuracy across all attempts (traditional metric for comparison)
     metrics['avg_accuracy'] = statistics.mean(all_rewards) if all_rewards else 0.0
